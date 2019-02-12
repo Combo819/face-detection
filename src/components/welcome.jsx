@@ -1,25 +1,80 @@
 import React from "react";
-import { Layout, Row, Col, Avatar, Icon, Menu, Dropdown } from "antd";
+import { Layout, Row, Col, Avatar, Icon, Menu, Dropdown, message } from "antd";
 import Login from "./login";
 import Register from "./register";
-import Mainpage from './mainpage'
+import Mainpage from "./mainpage";
 import { Router, Route } from "react-router-dom";
-import history from '../history';
+import history from "../history";
 const { Header, Content, Footer } = Layout;
+const axios = require("axios");
 class Welcome extends React.Component {
-  constructor(props){
-    super(props)
-    this.state={
-      avatarSrc:'',
-      useranme:"",
-      dropdownDisable:true
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      avatarSrc: "",
+      username: "",
+      dropdownDisable: true
+    };
+    this.logoutItem = this.logoutItem.bind(this);
+    this.setProfile= this.setProfile.bind(this)
+  }
+  componentDidMount() {
+    axios({
+      url: "http://127.0.0.1:5000/",
+      method: "get",
+      //set true if not deployed with back end in the same server
+      withCredentials: true
+    })
+      .then(res => {
+        if (res.data.login) {
+          this.setState(preState => ({
+            avatarSrc: res.data.avaSrc,
+            username: res.data.name,
+            dropdownDisable: false
+          }));
+          message.success('Welcome Back')
+          history.push("/mainpage");
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+  setProfile(nextState){
+    this.setState(preState => (nextState));
+  }
+  logoutItem(e) {
+    axios({
+      url: "http://127.0.0.1:5000/logout",
+      method: "get",
+      withCredentials: true
+    }).then(res => {
+      console.log(res);
+      
+      if (res.data.logout) {
+        this.setState(preState => ({
+          avatarSrc: "",
+          username: "",
+          dropdownDisable: true
+        }));
+        message.success('Account Logged Out')
+        history.push("/");
+      }else{
+        message.error('Error')
+      }
+    }).catch(err=>{
+      console.log(err);
+      message.error('Error Network')
+    });
   }
   render() {
     const menu = (
       <Menu>
-        <Menu.Item disabled={this.state.dropdownDisable}>
-            log out
+        <Menu.Item
+          onClick={e => this.logoutItem(e)}
+          disabled={this.state.dropdownDisable}
+        >
+          log out
         </Menu.Item>
       </Menu>
     );
@@ -34,18 +89,22 @@ class Welcome extends React.Component {
                 <span style={{ fontSize: 30 }}>LOGO</span>
               </Col>
               <Col lg={6}>
-              {this.state.avatarSrc?(<Avatar
-                  size={48}
-                  src={this.state.avatarSrc}
-                  style={{ marginRight: "20px", marginBottom: "8px" }}
-                />):(<Avatar
-                  size={48}
-                  icon="user"
-                  style={{ marginRight: "20px", marginBottom: "8px" }}
-                />)}
+                {this.state.avatarSrc ? (
+                  <Avatar
+                    size={48}
+                    src={this.state.avatarSrc}
+                    style={{ marginRight: "20px", marginBottom: "8px" }}
+                  />
+                ) : (
+                  <Avatar
+                    size={48}
+                    icon="user"
+                    style={{ marginRight: "20px", marginBottom: "8px" }}
+                  />
+                )}
                 <Dropdown overlay={menu}>
                   <span style={{ fontSize: 22 }}>
-                    { this.state.useranme||'Not Login'} <Icon type="down" />
+                    {this.state.username || "Not Login"} <Icon type="down" />
                   </span>
                 </Dropdown>
               </Col>
@@ -55,9 +114,9 @@ class Welcome extends React.Component {
             <div style={{ background: "#fff", padding: 24, minHeight: 280 }}>
               <Router history={history}>
                 <div>
-                  <Route exact path="/" component={Login} />
+                  <Route exact path="/"  render={(props) => <Login {...props} setProfile={this.setProfile} />}  />
                   <Route path="/register" component={Register} />
-                  <Route path='/mainpage' component={Mainpage} />
+                  <Route  path="/mainpage" component={Mainpage} />
                   {/* <Login /> */}
                 </div>
               </Router>

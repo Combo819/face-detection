@@ -2,6 +2,8 @@ import React from "react";
 import { Row, Col, Input, Button, Divider, message } from "antd";
 import history from "../history";
 
+const axios = require("axios");
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -26,6 +28,34 @@ class Login extends React.Component {
   signIn(e) {
     if (!(this.state.inputValue.username && this.state.inputValue.password)) {
       message.error("you must type in both useranme and password");
+    } else {
+      const formData = new FormData();
+      formData.append("username", this.state.inputValue.username);
+      formData.append("password", this.state.inputValue.password);
+      axios({
+        url: "http://127.0.0.1:5000/",
+        method: "POST",
+        data: formData,
+        //set true if not deployed with back end in the same server
+        withCredentials: true
+      })
+        .then(res => {
+          if (res.data.login) {
+            const nextState = {
+              avatarSrc: res.data.avaSrc,
+              username: res.data.name,
+              dropdownDisable: false
+            };
+            this.props.setProfile(nextState);
+            message.success("Welcome Back");
+            history.push("/mainpage");
+          } else {
+            message.error("Wrong username or password");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 
