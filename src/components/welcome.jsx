@@ -2,39 +2,24 @@ import React from "react";
 import { Layout, Row, Col, Avatar, Icon, Menu, Dropdown } from "antd";
 import Login from "./login";
 import Register from "./register";
+import Mainpage from './mainpage'
 import { Router, Route } from "react-router-dom";
 import history from '../history';
 const { Header, Content, Footer } = Layout;
 class Welcome extends React.Component {
+  constructor(props){
+    super(props)
+    this.state={
+      avatarSrc:'',
+      useranme:"",
+      dropdownDisable:true
+    }
+  }
   render() {
     const menu = (
       <Menu>
-        <Menu.Item>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="http://www.alipay.com/"
-          >
-            1st menu item
-          </a>
-        </Menu.Item>
-        <Menu.Item>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="http://www.taobao.com/"
-          >
-            2nd menu item
-          </a>
-        </Menu.Item>
-        <Menu.Item>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="http://www.tmall.com/"
-          >
-            3rd menu item
-          </a>
+        <Menu.Item disabled={this.state.dropdownDisable}>
+            log out
         </Menu.Item>
       </Menu>
     );
@@ -49,14 +34,18 @@ class Welcome extends React.Component {
                 <span style={{ fontSize: 30 }}>LOGO</span>
               </Col>
               <Col lg={6}>
-                <Avatar
+              {this.state.avatarSrc?(<Avatar
+                  size={48}
+                  src={this.state.avatarSrc}
+                  style={{ marginRight: "20px", marginBottom: "8px" }}
+                />):(<Avatar
                   size={48}
                   icon="user"
                   style={{ marginRight: "20px", marginBottom: "8px" }}
-                />
+                />)}
                 <Dropdown overlay={menu}>
                   <span style={{ fontSize: 22 }}>
-                    Not Login <Icon type="down" />
+                    { this.state.useranme||'Not Login'} <Icon type="down" />
                   </span>
                 </Dropdown>
               </Col>
@@ -68,6 +57,7 @@ class Welcome extends React.Component {
                 <div>
                   <Route exact path="/" component={Login} />
                   <Route path="/register" component={Register} />
+                  <Route path='/mainpage' component={Mainpage} />
                   {/* <Login /> */}
                 </div>
               </Router>
