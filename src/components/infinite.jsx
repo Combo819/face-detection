@@ -5,7 +5,7 @@ import Masonry from "react-masonry-component";
 const masonryOptions = {
   transitionDuration: 0
 };
-
+const axios = require("axios");
 const imagesLoadedOptions = { background: ".my-bg-image-el" };
 class Infinite extends Component {
   constructor(props) {
@@ -17,7 +17,6 @@ class Infinite extends Component {
       loadTimes: 0
     };
     this.loadFunc = this.loadFunc.bind(this);
-    this.subLoadFunc = this.subLoadFunc.bind(this);
   }
   /*
   loadFunc(page) {
@@ -33,50 +32,46 @@ class Infinite extends Component {
   }
   */
 
-  subLoadFunc() {
-    const batch = 20;
-
-    const tracks = this.state.tracks;
-    const hasMoreItems =
-      this.state.loadTimes * (batch + 1) < this.state.images.length;
-    const addItem = this.state.images.slice(
-      this.state.loadTimes * batch,
-      hasMoreItems
-        ? this.state.loadTimes * (batch + 1)
-        : this.state.images.length
-    );
-
-    addItem.map(item => {
-      tracks.push(item);
-    });
-
-    this.setState({
-      tracks: tracks,
-      hasMoreItems: hasMoreItems,
-      loadTimes: this.state.loadTimes+1
-    },console.log(this.state.loadTimes)
-    );
+  componentWillMount() {
+    axios({
+      url: "http://127.0.0.1:5000/loadimage",
+      method: "get",
+      //set true if not deployed with back end in the same server
+      withCredentials: true
+    })
+      .then(res => {
+        this.setState({ images: res.data.images });
+      })
+      .catch(err => console.log(err));
   }
-  
+
   loadFunc() {
-    if (this.state.loadTimes === 0) {
-      console.log("this.state.loadTimes", this.state.loadTimes);
-      const single = {
-        thumbnail:
-          "https://github.com/Combo819/myPhotoBlog/blob/master/images/waterfall/DSC_1579.jpg?raw=true",
-        afterUrl:
-          "https://github.com/Combo819/myPhotoBlog/blob/master/images/waterfall/DSC_3362.jpg?raw=true",
-        beforeUrl:
-          "https://github.com/Combo819/myPhotoBlog/blob/master/images/waterfall/DSC_3565.jpg?raw=true",
-        uploadTime: null
-      };
-      const images = [];
-      for (let i = 0; i < 100; i++) {
-        images.push(single);
-      }
-      this.setState({ images: images }, this.subLoadFunc);
-    }else{
-      this.subLoadFunc()
+    if (this.state.images.length) {
+      const batch = 5;
+      const tracks = this.state.tracks;
+      const hasMoreItems =
+        this.state.loadTimes * (batch + 1) < this.state.images.length;
+        console.log('this.state.images',this.state.images);
+        
+      const addItem = this.state.images.slice(
+        this.state.loadTimes * batch,
+        hasMoreItems
+          ? this.state.loadTimes * batch + batch
+          : this.state.images.length
+      );
+      console.log('addItem',addItem,'this.state.images.length',this.state.images.length);
+      
+      addItem.map(item => {
+        tracks.push(item);
+      });
+
+      this.setState({
+        tracks: tracks,
+        hasMoreItems: hasMoreItems,
+        loadTimes: this.state.loadTimes + 1
+      });
+      console.log('tracks',tracks);
+      console.log('hasMoreItems',hasMoreItems);
     }
   }
   render() {
@@ -93,6 +88,7 @@ class Infinite extends Component {
           className="track"
           key={i}
         >
+        <h2>{track.uploadTime}</h2>
           <img src={track.thumbnail} width="300" />
         </div>
       );
@@ -104,6 +100,7 @@ class Infinite extends Component {
         loadMore={this.loadFunc}
         hasMore={this.state.hasMoreItems}
         loader={loader}
+        threshold={0}
       >
         <div className="tracks">
           <Masonry
