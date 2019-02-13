@@ -1,4 +1,5 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Face detection
+A React.js project beautified with Ant Design. You should run with a flask back end: [face-detection-flask](https://github.com/Combo819/face-detection-flask)
 
 ## Available Scripts
 
