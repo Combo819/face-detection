@@ -25,34 +25,15 @@ class Mainpage extends React.Component {
     super(props);
     this.state = {
       noData: false,
-      images: [
-        {
-          id: 1,
-          src:
-            "https://github.com/Combo819/myPhotoBlog/blob/master/images/waterfall/DSC_1539.jpg?raw=true"
-        },
-        {
-          id: 2,
-          src:
-            "https://github.com/Combo819/myPhotoBlog/blob/master/images/waterfall/DSC_1547.jpg?raw=true"
-        },
-        {
-          id: 2,
-          src:
-            "https://github.com/Combo819/myPhotoBlog/blob/master/images/waterfall/DSC_1547.jpg?raw=true"
-        },
-        {
-          id: 2,
-          src:
-            "https://github.com/Combo819/myPhotoBlog/blob/master/images/waterfall/DSC_1547.jpg?raw=true"
-        },
-        {
-          id: 2,
-          src:
-            "https://github.com/Combo819/myPhotoBlog/blob/master/images/waterfall/DSC_1547.jpg?raw=true"
-        }
-      ]
     };
+    this.setNoData=this.setNoData.bind(this)
+  }
+  setNoData(noData){
+    console.log('noData',noData);
+    
+    this.setState({
+      noData
+    })
   }
   render() {
     return (
@@ -90,8 +71,7 @@ class Mainpage extends React.Component {
             </Col>
           </Row>
         ) : (
-          //   <Masonry elements={this.state.images} />
-          <Infinite />
+          <Infinite setNoData={this.setNoData} />
         )}
       </div>
     );
