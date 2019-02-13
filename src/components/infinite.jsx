@@ -169,7 +169,7 @@ class Infinite extends Component {
           hasMore={this.state.hasMoreItems}
           loader={loader}
           threshold={20}
-          initialLoad={true}
+          //initialLoad={true}
         >
           <div className="tracks">
             <Masonry
