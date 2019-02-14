@@ -20,12 +20,14 @@ class Welcome extends React.Component {
   }
   componentDidMount() {
     axios({
-      url: "http://127.0.0.1:5000/",
+      url: "http://127.0.0.1:5000/home",
       method: "get",
       //set true if not deployed with back end in the same server
       withCredentials: true
     })
       .then(res => {
+        console.log('welcome res',res);
+        
         if (res.data.login) {
           this.setState(preState => ({
             avatarSrc: res.data.avaSrc,
@@ -34,10 +36,14 @@ class Welcome extends React.Component {
           }));
           message.success('Welcome Back')
           history.push("/mainpage");
+        }else{
+          history.push("/homepage");
         }
       })
       .catch(err => {
         console.log(err);
+        history.push("/homepage");
+        message.error('Error Network')
       });
   }
   setProfile(nextState){
@@ -58,7 +64,7 @@ class Welcome extends React.Component {
           dropdownDisable: true
         }));
         message.success('Account Logged Out')
-        history.push("/");
+        history.push("/homepage");
       }else{
         message.error('Error')
       }
@@ -114,8 +120,8 @@ class Welcome extends React.Component {
             <div style={{ background: "#fff", padding: 24, minHeight: 280 }}>
               <Router history={history}>
                 <div>
-                  <Route exact path="/"  render={(props) => <Login {...props} setProfile={this.setProfile} />}  />
-                  <Route path="/register" component={Register} />
+                  <Route exact path="/homepage"  render={(props) => <Login {...props} setProfile={this.setProfile} />}  />
+                  <Route path="/registerpage" component={Register} />
                   <Route  path="/mainpage" component={Mainpage} />
                   {/* <Login /> */}
                 </div>

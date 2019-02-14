@@ -23,7 +23,7 @@ class Login extends React.Component {
   }
   toRegister(e) {
     e.preventDefault();
-    history.push("/register");
+    history.push("/registerpage");
   }
   signIn(e) {
     if (!(this.state.inputValue.username && this.state.inputValue.password)) {
@@ -33,7 +33,7 @@ class Login extends React.Component {
       formData.append("username", this.state.inputValue.username);
       formData.append("password", this.state.inputValue.password);
       axios({
-        url: "http://127.0.0.1:5000/",
+        url: "http://127.0.0.1:5000/home",
         method: "POST",
         data: formData,
         //set true if not deployed with back end in the same server

@@ -33,7 +33,7 @@ class Mainpage extends React.Component {
   }
   componentWillMount(){
     axios({
-      url: "http://127.0.0.1:5000/mainpage",
+      url: "http://127.0.0.1:5000/main",
       method: "get",
       //set true if not deployed with back end in the same server
       withCredentials: true
@@ -41,16 +41,14 @@ class Mainpage extends React.Component {
       .then(res => {
         console.log('res.data',res.data);
         if (res.data.login) {
-          
-          
           message.success('Welcome Back')
         }else{
-          history.push("/");
+          history.push("/homepage");
         }
       })
       .catch(err => {
         console.log(err);
-        history.push("/");
+        //history.push("/homepage");
       });
   }
   setNoData(noData) {

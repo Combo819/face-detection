@@ -32,7 +32,7 @@ class Login extends React.Component {
   }
   toLogin(e) {
     e.preventDefault();
-    history.push("/");
+    history.push("/homepage");
   }
   signUP(e) {
 
