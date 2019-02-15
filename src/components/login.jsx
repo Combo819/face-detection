@@ -3,7 +3,9 @@ import { Row, Col, Input, Button, Divider, message } from "antd";
 import history from "../history";
 
 const axios = require("axios");
-
+const localUrl='http://127.0.0.1:5000'
+const aliyunUrl='http://47.94.197.249:5000'
+const baseUrl=aliyunUrl
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -33,7 +35,7 @@ class Login extends React.Component {
       formData.append("username", this.state.inputValue.username);
       formData.append("password", this.state.inputValue.password);
       axios({
-        url: "http://127.0.0.1:5000/home",
+        url: baseUrl+"/home",
         method: "POST",
         data: formData,
         //set true if not deployed with back end in the same server

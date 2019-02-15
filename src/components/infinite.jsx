@@ -8,6 +8,9 @@ const masonryOptions = {
 };
 const axios = require("axios");
 const imagesLoadedOptions = { background: ".my-bg-image-el" };
+const localUrl='http://127.0.0.1:5000'
+const aliyunUrl='http://47.94.197.249:5000'
+const baseUrl=aliyunUrl
 class Infinite extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +31,7 @@ class Infinite extends Component {
 
   componentWillMount() {
     axios({
-      url: "http://127.0.0.1:5000/loadimage",
+      url: baseUrl+"/loadimage",
       method: "get",
       //set true if not deployed with back end in the same server
       withCredentials: true

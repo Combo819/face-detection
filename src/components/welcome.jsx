@@ -7,6 +7,9 @@ import { Router, Route } from "react-router-dom";
 import history from "../history";
 const { Header, Content, Footer } = Layout;
 const axios = require("axios");
+const localUrl='http://127.0.0.1:5000'
+const aliyunUrl='http://47.94.197.249:5000'
+const baseUrl=aliyunUrl
 class Welcome extends React.Component {
   constructor(props) {
     super(props);
@@ -20,7 +23,7 @@ class Welcome extends React.Component {
   }
   componentDidMount() {
     axios({
-      url: "http://127.0.0.1:5000/home",
+      url: baseUrl+"/home",
       method: "get",
       //set true if not deployed with back end in the same server
       withCredentials: true
@@ -51,7 +54,7 @@ class Welcome extends React.Component {
   }
   logoutItem(e) {
     axios({
-      url: "http://127.0.0.1:5000/logout",
+      url: baseUrl + "/logout",
       method: "get",
       withCredentials: true
     }).then(res => {

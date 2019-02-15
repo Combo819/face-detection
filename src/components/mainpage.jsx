@@ -5,10 +5,13 @@ import Masonry from "./masonry";
 import Infinite from "./infinite";
 const Dragger = Upload.Dragger;
 const axios = require("axios");
+const localUrl='http://127.0.0.1:5000'
+const aliyunUrl='http://47.94.197.249:5000'
+const baseUrl=aliyunUrl
 const uploadProps = {
   name: "file",
   multiple: false,
-  action: "http://127.0.0.1:5000/upload",
+  action: baseUrl+"/upload",
   onChange(info) {
     const status = info.file.status;
     if (status !== "uploading") {
@@ -33,7 +36,7 @@ class Mainpage extends React.Component {
   }
   componentWillMount(){
     axios({
-      url: "http://127.0.0.1:5000/main",
+      url: baseUrl+"/main",
       method: "get",
       //set true if not deployed with back end in the same server
       withCredentials: true
