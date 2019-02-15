@@ -8,7 +8,7 @@ import history from "../history";
 const { Header, Content, Footer } = Layout;
 const axios = require("axios");
 const localUrl='http://127.0.0.1:5000'
-const aliyunUrl='http://47.94.197.249:5000'
+const aliyunUrl='http://47.94.197.249:80'
 const baseUrl=aliyunUrl
 class Welcome extends React.Component {
   constructor(props) {
