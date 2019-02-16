@@ -72,12 +72,22 @@ You should install and import `flask_cors` to avoid crossing-domain. You should 
 ### `/upload`
 + methods: POST
 + return:
- ```python
- {
+     ```python
+     {
      'error':(Boolean)False or True # return False if uploaded sucessfully
      'message':(String)'Image uploaded!', 'File not selected' or something like this
- }
- ```
+     }
+     ```
+ 
+ ### `/register`
+ + methods: POST
+ + return:
+     ```python
+     {
+     'error':(Boolean)False or True # return True if register sucessfully
+     'message':(String)'Sign Up sucessfully!', 'the username already exists' or something like this
+     }
+     ```
  ### `/main`
  + methods: GET
  + return: if username in session
