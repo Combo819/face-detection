@@ -1,13 +1,16 @@
 import React from "react";
 import { Row, Col, Input, Button, Divider, message } from "antd";
 import history from "../history";
-
+const axios = require("axios");
+const localUrl = "http://127.0.0.1:5000";
+const aliyunUrl = "http://47.94.197.249:80";
+const baseUrl = localUrl;
 message.config({
-    top: 80,
-    duration: 3,
-    maxCount: 1
-  });
-  
+  top: 80,
+  duration: 3,
+  maxCount: 1
+});
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -35,47 +38,56 @@ class Login extends React.Component {
     history.push("/homepage");
   }
   signUP(e) {
-
     //possible character checking function
 
     if (
       this.state.inputValue.username.length > 16 ||
       this.state.inputValue.username.length < 6
     ) {
-        message.error(this.state.formatContent.userLength);
-      /* this.setState(preState => ({
-        formatContent: {
-          ...preState.formatContent,
-          currentShown: this.state.formatContent.userLength
-        }
-      }));
-      this.setState({ formatNotif: true }); */
+      message.error(this.state.formatContent.userLength);
     } else if (
       this.state.inputValue.password.length > 16 ||
       this.state.inputValue.password.length < 6
     ) {
-        message.error(this.state.formatContent.passwordLength);
-      /* this.setState(preState => ({
-        formatContent: {
-          ...preState.formatContent,
-          currentShown: this.state.formatContent.passwordLength
-        }
-      }));
-      this.setState({ formatNotif: true }); */
+      message.error(this.state.formatContent.passwordLength);
     } else if (
       this.state.inputValue.password !== this.state.inputValue.coPassword
     ) {
-        message.error(this.state.formatContent.inconsist);
-      /* this.setState(preState => ({
-        formatContent: {
-          ...preState.formatContent,
-          currentShown: this.state.formatContent.inconsist
+      message.error(this.state.formatContent.inconsist);
+    } else {
+      this.setState({ formatNotif: false });
+      //request for signing up
+      const formData = new FormData();
+
+      formData.append("username", this.state.inputValue.username);
+      formData.append("password", this.state.inputValue.password);
+      axios({
+        url: baseUrl + "/register",
+        method: "POST",
+        data: formData,
+        //set true if not deployed with back end in the same server
+        withCredentials: true
+      }).then(res => {
+        console.log(res);
+        
+        if (res.data.signup_status) {
+          const nextState = {
+            avatarSrc: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+            username: res.data.name,
+            dropdownDisable: false
+          };
+          this.props.setProfile(nextState);
+          message.success(res.data.message);
+          history.push("/mainpage");
+        }else{
+          message.error(res.data.message)
         }
-      }));
-      this.setState({ formatNotif: true }); */
-    }else{
-        this.setState({ formatNotif: false });
-        //request for signing up
+      }).catch(
+        err=>{
+          console.log(err);
+          message.error('Error Network')
+        }
+      );
     }
   }
   usernameOn(event) {
@@ -91,12 +103,14 @@ class Login extends React.Component {
   passwordOn(event) {
     //must assign a const to preserve the value
     const targetValue = event.target.value;
+
     this.setState(preState => ({
       inputValue: {
         ...preState.inputValue,
         password: targetValue
       }
     }));
+    console.log(this.state.inputValue);
   }
   coPasswordOn(event) {
     //must assign a const to preserve the value

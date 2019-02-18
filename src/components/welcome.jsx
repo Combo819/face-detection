@@ -9,7 +9,7 @@ const { Header, Content, Footer } = Layout;
 const axios = require("axios");
 const localUrl='http://127.0.0.1:5000'
 const aliyunUrl='http://47.94.197.249:80'
-const baseUrl=aliyunUrl
+const baseUrl=localUrl
 class Welcome extends React.Component {
   constructor(props) {
     super(props);
@@ -33,7 +33,7 @@ class Welcome extends React.Component {
         
         if (res.data.login) {
           this.setState(preState => ({
-            avatarSrc: res.data.avaSrc,
+            avatarSrc: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
             username: res.data.name,
             dropdownDisable: false
           }));
@@ -124,7 +124,8 @@ class Welcome extends React.Component {
               <Router history={history}>
                 <div>
                   <Route exact path="/homepage"  render={(props) => <Login {...props} setProfile={this.setProfile} />}  />
-                  <Route path="/registerpage" component={Register} />
+                  <Route exact path="/registerpage"  render={(props) => <Register {...props} setProfile={this.setProfile} />}  />
+                  {/* <Route path="/registerpage" component={Register} /> */}
                   <Route  path="/mainpage" component={Mainpage} />
                   {/* <Login /> */}
                 </div>

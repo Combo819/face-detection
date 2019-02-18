@@ -5,7 +5,7 @@ import history from "../history";
 const axios = require("axios");
 const localUrl='http://127.0.0.1:5000'
 const aliyunUrl='http://47.94.197.249:80'
-const baseUrl=aliyunUrl
+const baseUrl=localUrl
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -44,7 +44,7 @@ class Login extends React.Component {
         .then(res => {
           if (res.data.login) {
             const nextState = {
-              avatarSrc: res.data.avaSrc,
+              avatarSrc: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
               username: res.data.name,
               dropdownDisable: false
             };

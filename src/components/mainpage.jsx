@@ -7,7 +7,7 @@ const Dragger = Upload.Dragger;
 const axios = require("axios");
 const localUrl='http://127.0.0.1:5000'
 const aliyunUrl='http://47.94.197.249:80'
-const baseUrl=aliyunUrl
+const baseUrl=localUrl
 const uploadProps = {
   name: "file",
   multiple: false,
@@ -44,7 +44,7 @@ class Mainpage extends React.Component {
       .then(res => {
         console.log('res.data',res.data);
         if (res.data.login) {
-          message.success('Welcome Back')
+          //message.success('Welcome Back')
         }else{
           history.push("/homepage");
         }
