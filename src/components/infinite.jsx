@@ -8,9 +8,9 @@ const masonryOptions = {
 };
 const axios = require("axios");
 const imagesLoadedOptions = { background: ".my-bg-image-el" };
-const localUrl='http://127.0.0.1:5000'
-const aliyunUrl='http://47.94.197.249:80'
-const baseUrl=localUrl
+const localUrl = "http://127.0.0.1:5000";
+const aliyunUrl = "http://47.94.197.249:80";
+const baseUrl = localUrl;
 class Infinite extends Component {
   constructor(props) {
     super(props);
@@ -31,14 +31,14 @@ class Infinite extends Component {
 
   componentWillMount() {
     axios({
-      url: baseUrl+"/loadimage",
+      url: baseUrl + "/loadimage",
       method: "get",
       //set true if not deployed with back end in the same server
       withCredentials: true
     })
       .then(res => {
         console.log(res.data.images.length);
-        
+
         if (!res.data.images.length) {
           this.props.setNoData(true);
         } else {
@@ -48,7 +48,7 @@ class Infinite extends Component {
       })
       .catch(err => {
         console.log(err);
-        message.error('Error Network')
+        message.error("Error Network");
         this.props.setNoData(true);
       });
   }
@@ -71,6 +71,7 @@ class Infinite extends Component {
       compareVisible: visibility
     });
   }
+
 
   loadFunc() {
     if (this.state.images.length) {
@@ -98,6 +99,8 @@ class Infinite extends Component {
     }
   }
   render() {
+    console.log('render');
+    
     const loader = <div className="loader">Loading ...</div>;
     var items = [];
     this.state.tracks.map((track, i) => {

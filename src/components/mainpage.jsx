@@ -5,13 +5,13 @@ import Masonry from "./masonry";
 import Infinite from "./infinite";
 const Dragger = Upload.Dragger;
 const axios = require("axios");
-const localUrl='http://127.0.0.1:5000'
-const aliyunUrl='http://47.94.197.249:80'
-const baseUrl=localUrl
+const localUrl = "http://127.0.0.1:5000";
+const aliyunUrl = "http://47.94.197.249:80";
+const baseUrl = localUrl;
 const uploadProps = {
   name: "file",
   multiple: false,
-  action: baseUrl+"/upload",
+  action: baseUrl + "/upload",
   onChange(info) {
     const status = info.file.status;
     if (status !== "uploading") {
@@ -29,23 +29,24 @@ class Mainpage extends React.Component {
     super(props);
     this.state = {
       noData: false,
-      marginBottom:'30px'
+      marginBottom: "30px"
     };
     this.setNoData = this.setNoData.bind(this);
-    this.uploadMargin = this.uploadMargin.bind(this)
+    this.uploadMargin = this.uploadMargin.bind(this);
+    this.uploadChange=this.uploadChange.bind(this)
   }
-  componentWillMount(){
+  componentWillMount() {
     axios({
-      url: baseUrl+"/main",
+      url: baseUrl + "/main",
       method: "get",
       //set true if not deployed with back end in the same server
       withCredentials: true
     })
       .then(res => {
-        console.log('res.data',res.data);
+        console.log("res.data", res.data);
         if (res.data.login) {
           //message.success('Welcome Back')
-        }else{
+        } else {
           history.push("/homepage");
         }
       })
@@ -61,10 +62,19 @@ class Mainpage extends React.Component {
       noData
     });
   }
-  uploadMargin(fileList){
-    const marginBottom = fileList.length*20 + 30 + 'px'
-    this.setState({marginBottom})
+  uploadMargin(fileList) {
+    const marginBottom = fileList.length * 20 + 30 + "px";
+    this.setState({ marginBottom });
   }
+  uploadChange(e){
+    if(e.file.status==='done'){
+      setTimeout(() => {
+        window.location.replace(baseUrl + '/mainpage')
+      }, 1500);
+      
+    }
+  }
+
   render() {
     return (
       <div>
@@ -74,7 +84,11 @@ class Mainpage extends React.Component {
           style={{ marginTop: "30px", marginBottom: this.state.marginBottom }}
         >
           <Col lg={8}>
-            <Dragger beforeUpload={(file, fileList) => this.uploadMargin(fileList)} {...uploadProps}>
+            <Dragger
+              beforeUpload={(file, fileList) => this.uploadMargin(fileList)}
+              {...uploadProps}
+              onChange={e=>this.uploadChange(e)}
+            >
               <p className="ant-upload-drag-icon">
                 <Icon type="inbox" />
               </p>
@@ -101,7 +115,7 @@ class Mainpage extends React.Component {
             </Col>
           </Row>
         ) : (
-          <Infinite setNoData={this.setNoData} />
+          <Infinite  setNoData={this.setNoData} />
         )}
       </div>
     );
