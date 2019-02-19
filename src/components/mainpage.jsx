@@ -37,7 +37,7 @@ class Mainpage extends React.Component {
   }
   componentWillMount() {
     axios({
-      url: baseUrl + "/main",
+      url: baseUrl + "/home",
       method: "get",
       //set true if not deployed with back end in the same server
       withCredentials: true
@@ -88,6 +88,7 @@ class Mainpage extends React.Component {
               beforeUpload={(file, fileList) => this.uploadMargin(fileList)}
               {...uploadProps}
               onChange={e=>this.uploadChange(e)}
+              withCredentials={true}
             >
               <p className="ant-upload-drag-icon">
                 <Icon type="inbox" />
