@@ -4,7 +4,8 @@ import history from "../history";
 const axios = require("axios");
 const localUrl = "http://127.0.0.1:5000";
 const aliyunUrl = "http://47.94.197.249:80";
-const baseUrl = localUrl;
+const awsUrl='http://54.162.242.198:5000'
+const baseUrl=awsUrl
 message.config({
   top: 80,
   duration: 3,

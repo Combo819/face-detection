@@ -10,7 +10,8 @@ const axios = require("axios");
 const imagesLoadedOptions = { background: ".my-bg-image-el" };
 const localUrl = "http://127.0.0.1:5000";
 const aliyunUrl = "http://47.94.197.249:80";
-const baseUrl = localUrl;
+const awsUrl='http://54.162.242.198:5000'
+const baseUrl=awsUrl
 class Infinite extends Component {
   constructor(props) {
     super(props);
@@ -124,7 +125,7 @@ class Infinite extends Component {
                 e
               )
             }
-            src={track.thumbnail}
+            src={baseUrl+'/'+track.thumbnail}
             width="300"
           />
         </div>
@@ -152,7 +153,7 @@ class Infinite extends Component {
                   marginLeft: "-200px"
                 }}
                 width={400}
-                src={this.state.beforeUrl}
+                src={baseUrl+'/'+this.state.beforeUrl}
               />
             </Col>
             <Col style={{ position: "relative" }} lg={12}>
@@ -164,7 +165,7 @@ class Infinite extends Component {
                   marginLeft: "-200px"
                 }}
                 width={400}
-                src={this.state.afterUrl}
+                src={baseUrl+'/'+this.state.afterUrl}
               />
             </Col>
           </Row>
