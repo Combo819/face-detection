@@ -69,7 +69,6 @@ class Login extends React.Component {
         //set true if not deployed with back end in the same server
         withCredentials: true
       }).then(res => {
-        console.log(res);
         
         if (res.data.signup_status) {
           const nextState = {
@@ -150,7 +149,7 @@ class Login extends React.Component {
                 value={this.state.inputValue.username}
                 onChange={e => this.usernameOn(e)}
                 allowClear
-                placeholder="6-12 Characters, _, A-z,0-9"
+                placeholder="6-12 Characters"
               />
             </Col>
           </Row>

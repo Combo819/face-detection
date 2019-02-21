@@ -10,8 +10,8 @@ const axios = require("axios");
 const imagesLoadedOptions = { background: ".my-bg-image-el" };
 const localUrl = "http://127.0.0.1:5000";
 const aliyunUrl = "http://47.94.197.249:80";
-const awsUrl='http://54.162.242.198:5000'
-const baseUrl=awsUrl
+const awsUrl = "http://54.162.242.198:5000";
+const baseUrl = awsUrl;
 class Infinite extends Component {
   constructor(props) {
     super(props);
@@ -38,13 +38,20 @@ class Infinite extends Component {
       withCredentials: true
     })
       .then(res => {
-        console.log(res.data.images.length);
 
         if (!res.data.images.length) {
           this.props.setNoData(true);
         } else {
           this.props.setNoData(false);
-          this.setState({ images: res.data.images });
+          const images = res.data.images;
+          images.sort((a, b) =>
+            parseInt(a.uploadTime) > parseInt(b.uploadTime)
+              ? 1
+              : parseInt(b.uploadTime) > parseInt(a.uploadTime)
+              ? -1
+              : 0
+          );
+          this.setState({ images});
         }
       })
       .catch(err => {
@@ -73,14 +80,12 @@ class Infinite extends Component {
     });
   }
 
-
   loadFunc() {
     if (this.state.images.length) {
       const batch = 5;
       const tracks = this.state.tracks;
       const hasMoreItems =
         this.state.loadTimes * (batch + 1) < this.state.images.length;
-      console.log("this.state.images", this.state.images);
 
       const addItem = this.state.images.slice(
         this.state.loadTimes * batch,
@@ -100,8 +105,7 @@ class Infinite extends Component {
     }
   }
   render() {
-    console.log('render');
-    
+
     const loader = <div className="loader">Loading ...</div>;
     var items = [];
     this.state.tracks.map((track, i) => {
@@ -115,7 +119,17 @@ class Infinite extends Component {
           className="track"
           key={i}
         >
-          <h2>{track.uploadTime}</h2>
+          <h3>{track.uploadTime.substring(0, 4) +
+            "-" +
+            track.uploadTime.substring(4, 6) +"-"+
+            track.uploadTime.substring(6, 8) +
+            " " +
+            track.uploadTime.substring(8, 10) +
+            ":" +
+            track.uploadTime.substring(10, 12) +
+            ":" +
+            track.uploadTime.substring(12, 14) +
+            "(GMT)"}</h3>
           <img
             onClick={e =>
               this.picCompare(
@@ -125,7 +139,7 @@ class Infinite extends Component {
                 e
               )
             }
-            src={baseUrl+'/'+track.thumbnail}
+            src={baseUrl + "/" + track.thumbnail}
             width="300"
           />
         </div>
@@ -135,7 +149,20 @@ class Infinite extends Component {
     return (
       <div>
         <Modal
-          title={"upload:" + this.state.uploadTime}
+          title={
+            "upload:" +' '+
+            this.state.uploadTime.substring(0, 4) +
+            "-" +
+            this.state.uploadTime.substring(4, 6) +"-"+
+            this.state.uploadTime.substring(6, 8) +
+            " " +
+            this.state.uploadTime.substring(8, 10) +
+            ":" +
+            this.state.uploadTime.substring(10, 12) +
+            ":" +
+            this.state.uploadTime.substring(12, 14) +
+            "(GMT)"
+          }
           centered
           visible={this.state.compareVisible}
           footer={null}
@@ -153,7 +180,7 @@ class Infinite extends Component {
                   marginLeft: "-200px"
                 }}
                 width={400}
-                src={baseUrl+'/'+this.state.beforeUrl}
+                src={baseUrl + "/" + this.state.beforeUrl}
               />
             </Col>
             <Col style={{ position: "relative" }} lg={12}>
@@ -165,7 +192,7 @@ class Infinite extends Component {
                   marginLeft: "-200px"
                 }}
                 width={400}
-                src={baseUrl+'/'+this.state.afterUrl}
+                src={baseUrl + "/" + this.state.afterUrl}
               />
             </Col>
           </Row>

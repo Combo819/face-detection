@@ -16,7 +16,6 @@ const uploadProps = {
   onChange(info) {
     const status = info.file.status;
     if (status !== "uploading") {
-      console.log(info.file, info.fileList);
     }
     if (status === "done") {
       message.success(`${info.file.name} file uploaded successfully.`);
@@ -44,7 +43,6 @@ class Mainpage extends React.Component {
       withCredentials: true
     })
       .then(res => {
-        console.log("res.data", res.data);
         if (res.data.login) {
           //message.success('Welcome Back')
         } else {
@@ -57,20 +55,32 @@ class Mainpage extends React.Component {
       });
   }
   setNoData(noData) {
-    console.log("noData", noData);
 
     this.setState({
       noData
     });
   }
-  uploadMargin(fileList) {
+  uploadMargin(file,fileList) {
     const marginBottom = fileList.length * 20 + 30 + "px";
-    this.setState({ marginBottom });
+    this.setState({ marginBottom });    
+    const fileSuffix = file.name.split('.').pop().toUpperCase();
+    
+    if(file.size>16*1024*1024){
+      message.error('the max size of the image is 16MB')
+      return false
+    }else if(!(fileSuffix==='JPG' || fileSuffix==='PNG' || fileSuffix==='JPEG')){
+      message.error('you can only upload .jpg, .png and .jpeg')
+      return  false
+    }
+    else{
+      return true
+    }
+    
   }
   uploadChange(e){
     if(e.file.status==='done'){
       setTimeout(() => {
-        window.location.replace(baseUrl + '/mainpage')
+        //window.location.replace(baseUrl + '/mainpage')
       }, 1500);
       
     }
@@ -86,7 +96,7 @@ class Mainpage extends React.Component {
         >
           <Col lg={8}>
             <Dragger
-              beforeUpload={(file, fileList) => this.uploadMargin(fileList)}
+              beforeUpload={(file, fileList) => this.uploadMargin(file,fileList)}
               {...uploadProps}
               onChange={e=>this.uploadChange(e)}
               withCredentials={true}
@@ -98,7 +108,7 @@ class Mainpage extends React.Component {
                 Click or drag file to this area to upload
               </p>
               <p className="ant-upload-hint">
-                Only .jpg, .png, jpeg, .bmp supported. Maximum size: 4MB
+                Only .jpg, .png, jpeg, supported. Maximum size: 4MB
               </p>
             </Dragger>
           </Col>

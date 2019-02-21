@@ -108,7 +108,7 @@ class Login extends React.Component {
                 allowClear
                 value={this.state.inputValue.username}
                 onChange={e => this.usernameOn(e)}
-                placeholder="6-12 Characters, _, A-z,0-9"
+                placeholder="6-12 Characters"
               />
             </Col>
           </Row>

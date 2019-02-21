@@ -30,7 +30,6 @@ class Welcome extends React.Component {
       withCredentials: true
     })
       .then(res => {
-        console.log('welcome res',res);
         
         if (res.data.login) {
           this.setState(preState => ({
@@ -59,7 +58,6 @@ class Welcome extends React.Component {
       method: "get",
       withCredentials: true
     }).then(res => {
-      console.log(res);
       
       if (res.data.logout) {
         this.setState(preState => ({
@@ -96,7 +94,10 @@ class Welcome extends React.Component {
           >
             <Row type="flex" justify="space-between">
               <Col span={4}>
-                <span style={{ fontSize: 30 }}>LOGO</span>
+                <img width={110} style={{
+                  marginTop:-26
+                }} src={'https://combo819.github.io/myPhotoBlog/images/homepage/logo.png'}></img>
+                {/* <span style={{ fontSize: 30 }}>LOGO</span> */}
               </Col>
               <Col lg={6}>
                 {this.state.avatarSrc ? (
@@ -126,9 +127,7 @@ class Welcome extends React.Component {
                 <div>
                   <Route exact path="/homepage"  render={(props) => <Login {...props} setProfile={this.setProfile} />}  />
                   <Route exact path="/registerpage"  render={(props) => <Register {...props} setProfile={this.setProfile} />}  />
-                  {/* <Route path="/registerpage" component={Register} /> */}
                   <Route  path="/mainpage" component={Mainpage} />
-                  {/* <Login /> */}
                 </div>
               </Router>
             </div>
