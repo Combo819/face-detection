@@ -80,7 +80,7 @@ class Mainpage extends React.Component {
   uploadChange(e){
     if(e.file.status==='done'){
       setTimeout(() => {
-        //window.location.replace(baseUrl + '/mainpage')
+        window.location.replace(baseUrl + '/mainpage')
       }, 1500);
       
     }

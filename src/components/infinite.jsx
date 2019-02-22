@@ -46,9 +46,9 @@ class Infinite extends Component {
           const images = res.data.images;
           images.sort((a, b) =>
             parseInt(a.uploadTime) > parseInt(b.uploadTime)
-              ? 1
-              : parseInt(b.uploadTime) > parseInt(a.uploadTime)
               ? -1
+              : parseInt(b.uploadTime) > parseInt(a.uploadTime)
+              ? 1
               : 0
           );
           this.setState({ images});
