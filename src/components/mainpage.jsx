@@ -108,7 +108,7 @@ class Mainpage extends React.Component {
                 Click or drag file to this area to upload
               </p>
               <p className="ant-upload-hint">
-                Only .jpg, .png, jpeg, supported. Maximum size: 4MB
+                Only .jpg, .png, jpeg, supported. Maximum size: 16MB
               </p>
             </Dragger>
           </Col>
